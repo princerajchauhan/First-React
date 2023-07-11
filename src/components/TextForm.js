@@ -32,14 +32,15 @@ export default function TextForm(props) {
     const handleClrClick = () => {
         if (window.confirm("Do u really want to clear all the text ?")) {
             setText("")
+            props.showAlert("Text Cleared !", "danger")
         }
-        props.showAlert("Text Cleared !", "danger")
     }
 
     const handleCopyText = () => {
         let text = document.getElementById('box')
         text.select()
         navigator.clipboard.writeText(text.value)
+        document.getSelection().removeAllRanges()
         props.showAlert("Text Copied !", "info")
     }
 
@@ -53,34 +54,36 @@ export default function TextForm(props) {
     // text = "Hello world"    // wrong way to change the text
     // setText("New Text")     // correct way to change the text
 
-    var textWord = text.split(' ').length
+    // var textWord = text.split(' ').filter((x) => x.length !== 0).length
     var textChar = text.length
-    if (text.endsWith(' ')) {
-        textWord = textWord - 1
-        textChar = textChar - 1
-    }
+    // if (text.endsWith(' ')) {
+    //     textWord = textWord - 1
+    //     textChar = textChar - 1
+    // }
 
     return (
         <>
-            <div className="container" style={{color: props.mode === 'light' ? "black" : "white"}}>
-                <h1>{props.heading}</h1>
+            <div className="container" style={{ color: props.mode === 'light' ? "black" : "white" }}>
+                <h1 className="mb-4">{props.heading}</h1>
                 <div className="mb-3">
-                    <textarea className="form-control" value={text} onChange={handleonChange} style={{ backgroundColor: props.mode === 'light' ? "white" : "grey", 
-                    color: props.mode === 'light' ? "black" : "white" }} id="box" rows="8"></textarea>
+                    <textarea className="form-control" value={text} onChange={handleonChange} style={{
+                        backgroundColor: props.mode === 'light' ? "white" : "#3b3d68",
+                        color: props.mode === 'light' ? "black" : "white"
+                    }} id="box" rows="8"></textarea>
                 </div>
 
-                <button className="btn btn-primary" onClick={handleUpClick}>Convert To UpperCase</button>
-                <button className="btn btn-dark mx-3" onClick={handleLowClick}>Convert To LowerCase</button>
-                <button className="btn btn-success" onClick={handleCapClick}>Convert To Capitalize</button>
-                <button className="btn btn-danger mx-3" onClick={handleClrClick}>Clear Text</button>
-                <button className="btn btn-secondary" onClick={handleExtraSpaces}>Remove Extra Spaces</button>
-                <button className="btn btn-warning mx-3" onClick={handleCopyText}>Copy Text</button>
+                <button disabled={text.length === 0} className="btn btn-primary my-1" onClick={handleUpClick}>Convert To UpperCase</button>
+                <button disabled={text.length === 0} className="btn btn-dark mx-3 my-1" onClick={handleLowClick}>Convert To LowerCase</button>
+                <button disabled={text.length === 0} className="btn btn-success my-1" onClick={handleCapClick}>Convert To Capitalize</button>
+                <button disabled={text.length === 0} className="btn btn-danger mx-3 my-1" onClick={handleClrClick}>Clear Text</button>
+                <button disabled={text.length === 0} className="btn btn-secondary my-1" onClick={handleExtraSpaces}>Remove Extra Spaces</button>
+                <button disabled={text.length === 0} className="btn btn-warning mx-3 my-1" onClick={handleCopyText}>Copy Text</button>
             </div>
 
-            <div className="container my-4" style={{color: props.mode === 'light' ? "black" : "white"}}>
+            <div className="container my-4" style={{ color: props.mode === 'light' ? "black" : "white" }}>
                 <h1>Your text summary</h1>
-                <p>{textWord} words and {textChar} characters.</p>
-                <p>{(0.008 * textWord).toFixed(3)} Minutes read</p>
+                <p>{text.split(/\s+/).filter((x) => x.length !== 0).length} words and {textChar} characters.</p>
+                <p>{(0.008 * text.split(' ').filter((x) => x.length !== 0).length).toFixed(3)} Minutes read</p>
             </div>
         </>
     )
