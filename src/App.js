@@ -75,13 +75,13 @@ function App() {
 
         <div className="container my-3">
           <Routes>
-            <Route exact path="/about" element={<About mode={mode} />} />
-            {/* <Route path="/about">
-              <About />
-            </Route> */}
             <Route exact path="/" element={<TextForm heading="Try TextUtils - word counter | character counterf" mode={mode} showAlert={showAlert} />} />
             {/* <Route path="/">
               <TextForm heading="Enter text to analyze below" mode={mode} showAlert={showAlert} />
+            </Route> */}
+            <Route exact path="/about" element={<About mode={mode} />} />
+            {/* <Route path="/about">
+              <About />
             </Route> */}
           </Routes>
         </div>
